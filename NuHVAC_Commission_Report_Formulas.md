@@ -5,8 +5,12 @@
 
 # Rep Commission
 
-## Current Logic:  Indexing the table on 'Commission Rates' for rate per company percentage
-=INDEX(Table1[#All],MATCH("Respicaire",Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(Respicaire!A3,Table1[#Headers],0))*$J3
+## Final Formula with OOS replacement option with Error Check
+
+=IFERROR(INDEX(Table1[#All],MATCH("Respicaire",Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(IF(INDEX($A:$J,ROW(),MATCH("OOS",$1:$1,0))="Y","Out of State of TX",Respicaire!A3),Table1[#Headers],0))*$J3,"")
+
+<details><summary>More Details</summary>
+<p>
 
 ### we'll need to do the above rep calculation, however, will need to pull the 'Out of State of TX' header match if OOS = Y 
 =INDEX(Table1[#All],MATCH("Respicaire",Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(Respicaire!A4,Table1[#Headers],0))*$J4
@@ -20,11 +24,11 @@
 ### Final Formula with OOS replacement option
 =INDEX(Table1[#All],MATCH("Respicaire",Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(IF(INDEX($A:$J,ROW(),MATCH("OOS",$1:$1,0))="Y","Out of State of TX",Respicaire!A4),Table1[#Headers],0))*$J4
 
-## Final Formula with OOS replacement option with Error Check
+</p>
+</details>
 
-=IFERROR(INDEX(Table1[#All],MATCH("Respicaire",Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(IF(INDEX($A:$J,ROW(),MATCH("OOS",$1:$1,0))="Y","Out of State of TX",Respicaire!A3),Table1[#Headers],0))*$J3,"")
 
-# Rep Commission
+# Company Commission
 
 =IFERROR((INDEX(Table1[#All],MATCH("Respicaire",Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(Table1[[#Headers],[Company Percentage]],Table1[#Headers],0))*$K3)-$B3,"")
 

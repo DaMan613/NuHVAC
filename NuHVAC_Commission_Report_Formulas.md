@@ -7,22 +7,32 @@
 
 ## Final Formula with OOS replacement option with Error Check
 
+```
 =IFERROR(INDEX(Table1[#All],MATCH("Respicaire",Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(IF(INDEX($A:$J,ROW(),MATCH("OOS",$1:$1,0))="Y","Out of State of TX",Respicaire!A3),Table1[#Headers],0))*$J3,"")
+```
 
 <details><summary>More Details</summary>
 <p>
 
-### we'll need to do the above rep calculation, however, will need to pull the 'Out of State of TX' header match if OOS = Y 
+### We will need to pull the 'Out of State of TX' header match if OOS = Y 
+```
 =INDEX(Table1[#All],MATCH("Respicaire",Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(Respicaire!A4,Table1[#Headers],0))*$J4
+```
 
 ### Get OOS Value
+```
 =INDEX($A:$J,ROW(),MATCH("OOS",$1:$1,0))
+```
 
 ### Replace Rep with OOS Text if OOS = Y
+```
 =IF(INDEX($A:$J,ROW(),MATCH("OOS",$1:$1,0))="Y","Out of State of TX",Respicaire!A4)
+```
 
 ### Final Formula with OOS replacement option
+```
 =INDEX(Table1[#All],MATCH("Respicaire",Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(IF(INDEX($A:$J,ROW(),MATCH("OOS",$1:$1,0))="Y","Out of State of TX",Respicaire!A4),Table1[#Headers],0))*$J4
+```
 
 </p>
 </details>

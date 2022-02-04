@@ -1,6 +1,4 @@
-"========="
-"Sales Rep"
-"========="
+# Sales Rep
 
 =IFERROR(VLOOKUP(Respicaire!$G3,Lookups!$A:$B,2,FALSE),"")
 

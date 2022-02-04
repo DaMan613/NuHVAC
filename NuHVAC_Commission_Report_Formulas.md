@@ -3,7 +3,7 @@
 
 ## <a name="get-tab"></a>Get Tab/Worksheet Name
 
-Retrieve the Tab/Worksheet Name and Insert into $B$1 for use within formulas.
+Retrieve the Tab/Worksheet Name and Insert into $B$2 for use within formulas.
 
 ```ruby
 =MID(CELL("filename",A1),FIND("]",CELL("filename",A1))+1,255)
@@ -14,7 +14,7 @@ Retrieve the Tab/Worksheet Name and Insert into $B$1 for use within formulas.
 # Sales Rep
 
 ```ruby
-=IF(ISBLANK($M5),"",VLOOKUP(INDIRECT(B6&"!$G5"),Lookups!$A:$B,2,FALSE))
+=IF(ISBLANK($M3),"",VLOOKUP($G3,Lookups!$A:$B,2,FALSE))
 ```
 
 
@@ -24,7 +24,7 @@ Retrieve the Tab/Worksheet Name and Insert into $B$1 for use within formulas.
 Dependency: [Get Tab/Worksheet Name](#get-tab)
 
 ```ruby
-=IF(ISBLANK($M5),"",IFERROR((INDEX(Table1[#All],MATCH($B$1,Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(IF(INDEX($A:$J,ROW(),MATCH("OOS",$3:$3,0))="Y","Out of State of TX",INDIRECT($B$1&"!$A5")),Table1[#Headers],0))*$J5),""))
+=IF(ISBLANK($M3),"",IFERROR((INDEX(Table1[#All],MATCH($B$2,Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(IF(INDEX($A:$J,ROW(),MATCH("OOS",$1:$1,0))="Y","Out of State of TX",INDIRECT($B$2&"!$A5")),Table1[#Headers],0))*$J3),""))
 ```
 
 <details><summary>More Details</summary>
@@ -33,7 +33,7 @@ Dependency: [Get Tab/Worksheet Name](#get-tab)
 ### We will need to pull the 'Out of State of TX' header match if OOS = Y 
 Dependency: [Get Tab/Worksheet Name](#get-tab)
 ```ruby
-=INDEX(Table1[#All],MATCH($B$1,Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(INDIRECT($B$1&"!$A5"),Table1[#Headers],0))*$J5
+=INDEX(Table1[#All],MATCH($B$2,Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(INDIRECT($B$2&"!$A5"),Table1[#Headers],0))*$J5
 ```
 
 ### Get OOS Value
@@ -44,13 +44,13 @@ Dependency: [Get Tab/Worksheet Name](#get-tab)
 ### Replace Rep with OOS Text if OOS = Y
 Dependency: [Get Tab/Worksheet Name](#get-tab)
 ```ruby
-=IF(INDEX($A:$J,ROW(),MATCH("OOS",$3:$3,0))="Y","Out of State of TX",INDIRECT($B$1&"!$A5"))
+=IF(INDEX($A:$J,ROW(),MATCH("OOS",$3:$3,0))="Y","Out of State of TX",INDIRECT($B$2&"!$A5"))
 ```
 
 ### Final Formula with OOS replacement option
 Dependency: [Get Tab/Worksheet Name](#get-tab)
 ```ruby
-INDEX(Table1[#All],MATCH($B$1,Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(IF(INDEX($A:$J,ROW(),MATCH("OOS",$3:$3,0))="Y","Out of State of TX",INDIRECT($B$1&"!$A5")),Table1[#Headers],0))*$J5```
+INDEX(Table1[#All],MATCH($B$2,Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(IF(INDEX($A:$J,ROW(),MATCH("OOS",$3:$3,0))="Y","Out of State of TX",INDIRECT($B$2&"!$A5")),Table1[#Headers],0))*$J5```
 ```
 </p>
 </details>
@@ -59,14 +59,14 @@ INDEX(Table1[#All],MATCH($B$1,Table1[[#All],[Commission Rates per Manufacturers]
 # Company Commission
 Dependency: [Get Tab/Worksheet Name](#get-tab)
 ```ruby
-=IF(ISBLANK($M5),"",INDEX(Table1[#All],MATCH($B$1,Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(INDIRECT($B$1&"!$A5"),Table1[#Headers],0))*$J5)
+=IF(ISBLANK($M3),"",INDEX(Table1[#All],MATCH($B$2,Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(INDIRECT($B$2&"!$A5"),Table1[#Headers],0))*$J3)
 ```
 
 
 # Out of State (OOS)
 
 ```ruby
-=IF(ISBLANK($M5),"",IF(AND(E5<>"TX",E5<>0,NOT(ISBLANK(E5))),"Y","N"))
+=IF(ISBLANK($M3),"",IF(AND(E3<>"TX",E3<>0,NOT(ISBLANK(E3))),"Y","N"))
 ```
 
 # State
@@ -74,7 +74,7 @@ Dependency: [Get Tab/Worksheet Name](#get-tab)
 This will find the current column's header in the source data lookup column header.
 
 ```ruby
-=IF(ISBLANK($M5),"",INDEX($M:$AE,ROW(),MATCH(E$3,$M$3:$AE$3,0)))
+=IF(ISBLANK($M3),"",INDEX($M:$AE,ROW(),MATCH(E$1,$M$1:$AE$1,0)))
 ```
 
 # Account Name
@@ -82,21 +82,21 @@ This will find the current column's header in the source data lookup column head
 This will find the current column's header in the source data lookup column header.
 
 ```ruby
-=IF(ISBLANK($M5),"",INDEX($M:$AE,ROW(),MATCH(F$3,$M$3:$AE$3,0)))
+=IF(ISBLANK($M3),"",INDEX($M:$AE,ROW(),MATCH(F$1,$M$1:$AE$1,0)))
 ```
 
-#City
+# City
 :information_source:	Generic/Pastable field lookup; pastable to any column.
 This will find the current column's header in the source data lookup column header.
 
 ```ruby
-=IF(ISBLANK($M5),"",INDEX($M:$AE,ROW(),MATCH(G$3,$M$3:$AE$3,0)))
+=IF(ISBLANK($M3),"",INDEX($M:$AE,ROW(),MATCH(G$1,$M$1:$AE$1,0)))
 ```
 
 # Date Paid
 
 ```ruby
-=IF(ISBLANK($M5),"",(DATE(YEAR(INDEX($M:$AE,ROW(),MATCH(H$3,$M$3:$AE$3,0))),MONTH(INDEX($M:$AE,ROW(),MATCH(H$3,$M$3:$AE$3,0))),1)))
+=IF(ISBLANK($M3),"",(DATE(YEAR(INDEX($M:$AE,ROW(),MATCH(H$1,$M$1:$AE$1,0))),MONTH(INDEX($M:$AE,ROW(),MATCH(H$1,$M$1:$AE$1,0))),1)))
 ```
 
 
@@ -105,7 +105,7 @@ This will find the current column's header in the source data lookup column head
 This will find the current column's header in the source data lookup column header.
 
 ```ruby
-=IF(ISBLANK($M5),"",INDEX($M:$AE,ROW(),MATCH(I$3,$M$3:$AE$3,0)))
+=IF(ISBLANK($M3),"",INDEX($M:$AE,ROW(),MATCH(I$1,$M$1:$AE$1,0)))
 ```
 
 # Net Amt.
@@ -113,5 +113,5 @@ This will find the current column's header in the source data lookup column head
 This will find the current column's header in the source data lookup column header.
 
 ```ruby
-=IF(ISBLANK($M5),"",INDEX($M:$AE,ROW(),MATCH(I$3,$M$3:$AE$3,0)))
+=IF(ISBLANK($M3),"",INDEX($M:$AE,ROW(),MATCH(J$1,$M$1:$AE$1,0)))
 ```

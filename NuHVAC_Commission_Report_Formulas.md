@@ -14,8 +14,11 @@ Retrieve the Tab/Worksheet Name and Insert into $B$2 for use within formulas.
 # Sales Rep
 
 ```ruby
-=IF(ISBLANK($M3),"",VLOOKUP($G3,Lookups!$A:$B,2,FALSE))
+=IF(ISBLANK($M3),"",IF($D3="Y",VLOOKUP($E3,Lookups!$J:$K,2,FALSE),VLOOKUP($G3,Lookups!$A:$B,2,FALSE)))
 ```
+* Check if Account Name is blank or not. (Used to determine if entry exists in data source columns to avoid N/A or Error)
+* If OOS, then lookup State in Lookups.
+* If NOT OOS, then lookup City in Lookups.
 
 
 # Rep Commission
@@ -26,6 +29,10 @@ Dependency: [Get Tab/Worksheet Name](#get-tab)
 ```ruby
 =IF(ISBLANK($M3),"",IFERROR((INDEX(Table1[#All],MATCH($B$2,Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(IF(INDEX($A:$J,ROW(),MATCH("OOS",$1:$1,0))="Y","Out of State of TX",INDIRECT($B$2&"!$A5")),Table1[#Headers],0))*$J3),""))
 ```
+* Check if Account Name is blank or not. (Used to determine if entry exists in data source columns to avoid N/A or Error)
+* If OOS, then lookup % in Commission Rates' OOS Column.
+* If NOT OOS, then lookup % in Commission Rates' appropriate Sales Rep Column.
+
 
 <details><summary>More Details</summary>
 <p>
@@ -33,7 +40,7 @@ Dependency: [Get Tab/Worksheet Name](#get-tab)
 ### We will need to pull the 'Out of State of TX' header match if OOS = Y 
 Dependency: [Get Tab/Worksheet Name](#get-tab)
 ```ruby
-=INDEX(Table1[#All],MATCH($B$2,Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(INDIRECT($B$2&"!$A5"),Table1[#Headers],0))*$J5
+=INDEX(Table1[#All],MATCH($B$2,Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(INDIRECT($B$2&"!$A5"),Table1[#Headers],0))*$J3
 ```
 
 ### Get OOS Value
@@ -115,3 +122,11 @@ This will find the current column's header in the source data lookup column head
 ```ruby
 =IF(ISBLANK($M3),"",INDEX($M:$AE,ROW(),MATCH(J$1,$M$1:$AE$1,0)))
 ```
+
+
+# Conditional Formatting
+
+## Out of State (OOS)
+
+
+## Anything that is a formula

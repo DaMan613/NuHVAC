@@ -27,46 +27,17 @@ Retrieve the Tab/Worksheet Name and Insert into $B$2 for use within formulas.
 Dependency: [Get Tab/Worksheet Name](#get-tab)
 
 ```ruby
-=IF(ISBLANK($M3),"",IFERROR((INDEX(Table1[#All],MATCH($B$2,Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(IF(INDEX($A:$J,ROW(),MATCH("OOS",$1:$1,0))="Y","Out of State of TX",INDIRECT($B$2&"!$A5")),Table1[#Headers],0))*$J3),""))
+=IF(ISBLANK($M3),"",IFERROR((INDEX(Table1[#All],MATCH($B$2,Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(IF(INDEX($A:$J,ROW(),MATCH("OOS",$1:$1,0))="Y","Out of State of TX",$A3),Table1[#Headers],0))*$J3),""))
 ```
 * Check if Account Name is blank or not. (Used to determine if entry exists in data source columns to avoid N/A or Error)
 * If OOS, then lookup % in Commission Rates' OOS Column.
 * If NOT OOS, then lookup % in Commission Rates' appropriate Sales Rep Column.
 
 
-<details><summary>More Details</summary>
-<p>
-
-### We will need to pull the 'Out of State of TX' header match if OOS = Y 
-Dependency: [Get Tab/Worksheet Name](#get-tab)
-```ruby
-=INDEX(Table1[#All],MATCH($B$2,Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(INDIRECT($B$2&"!$A5"),Table1[#Headers],0))*$J3
-```
-
-### Get OOS Value
-```ruby
-=INDEX($A:$J,ROW(),MATCH("OOS",$3:$3,0))
-```
-
-### Replace Rep with OOS Text if OOS = Y
-Dependency: [Get Tab/Worksheet Name](#get-tab)
-```ruby
-=IF(INDEX($A:$J,ROW(),MATCH("OOS",$3:$3,0))="Y","Out of State of TX",INDIRECT($B$2&"!$A5"))
-```
-
-### Final Formula with OOS replacement option
-Dependency: [Get Tab/Worksheet Name](#get-tab)
-```ruby
-INDEX(Table1[#All],MATCH($B$2,Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(IF(INDEX($A:$J,ROW(),MATCH("OOS",$3:$3,0))="Y","Out of State of TX",INDIRECT($B$2&"!$A5")),Table1[#Headers],0))*$J5```
-```
-</p>
-</details>
-
-
 # Company Commission
 Dependency: [Get Tab/Worksheet Name](#get-tab)
 ```ruby
-=IF(ISBLANK($M3),"",INDEX(Table1[#All],MATCH($B$2,Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(INDIRECT($B$2&"!$A5"),Table1[#Headers],0))*$J3)
+=IF(ISBLANK($M3),"",INDEX(Table1[#All],MATCH($B$2,Table1[[#All],[Commission Rates per Manufacturers]],0),MATCH(C$1,Table1[#Headers],0))*$J3-$B3)
 ```
 
 
